@@ -22,6 +22,7 @@ let percentValue = 0
 let lastOperator = ''
 let lastValue = 0
 let isDot = false
+let count = 0
     
     numbers[9].disabled = true
     dot.disabled = true
@@ -31,6 +32,8 @@ let isDot = false
 
 numbers.forEach(function(el){
     el.addEventListener('click', function(){
+        count++
+        clear.innerHTML = 'C'
         clearAnimation()
         if(result.innerHTML.length >= 5){
             result.style.fontSize = '100px'
@@ -73,7 +76,7 @@ numbers.forEach(function(el){
                 CurrentOperator = ''
                 operators = []
                 isOperator = false
-
+                  
 
                 
             }
@@ -87,23 +90,19 @@ numbers.forEach(function(el){
     //   function a(){
   numbers.forEach(function(el){
     el.addEventListener('click', function(){
-        if(isDot === true){
-         dot.disabled = true
-         console.log('sd')
-        }
-        else {
-            dot.disabeld = false
-        }
+        isDot = true
     })
   })
 
   dot.addEventListener('click', function(){
-    isDot = true
+    dot.disabled = true
   })
 
 operator.forEach(function(el){
     el.addEventListener('click',function(){
         isOperator = true
+        count = 0
+        numbers[9].disabled = true
         lastValue = result.innerHTML
         lastOperator = el.innerHTML
         if(isOperator === true && operators.length < 1){
@@ -123,6 +122,13 @@ operator.forEach(function(el){
         isNull = true
     })
 })
+numbers[9].addEventListener('click', function(){
+    if (result.innerHTML[0] === '0')
+    numbers[9].disabled = true
+    else{
+        numbers[9].disabled = false
+    }
+})
 
 document.getElementById('showInfo').addEventListener('click', function(){
     console.log(`
@@ -135,6 +141,8 @@ document.getElementById('showInfo').addEventListener('click', function(){
         Oper. length: ${operators.length}
         Last Operator: ${lastOperator}
         Last Value: ${lastValue}
+        Is Dot: ${isDot}
+        Count: ${count}
     `)
 })
 
@@ -142,16 +150,30 @@ equal.addEventListener('click', function(){
     process.innerHTML = `${eval(process.innerHTML.replace(/X/gi, '*'))}`
 })
 clear.addEventListener('click',function(){
-    isFirstValue = true
-    isNull = true
-    CurrentOperator = ''
-    operators = []
+    if(clear.innerHTML === 'C'){
+        isNull = true
+        result.innerHTML = 0
+        clear.innerHTML = 'AC'
+        for(let i = 0; i<count; i++){
+            process.innerHTML = process.innerHTML.slice(0, -1);
+        }
+    }
+    else if(clear.innerHTML === 'AC'){
+        isFirstValue = true
+        CurrentOperator = ''
+        operators = []
+        result.innerHTML = 0
+        process.innerHTML = 'Clear'
+
+    }
+   
+
     result.style.fontSize = '120px'
     numbers[9].disabled = true
     numbers.forEach(e => e.disabled = false)
-    process.innerHTML = 'Clear'
-    result.innerHTML = 0
+
     clearAnimation()
+    numbers[9].disabled = true
 })
 
 
