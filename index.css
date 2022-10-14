@@ -98,7 +98,7 @@ body {
 }
 
 .progress{
-    display: none;
+    /* display: none; */
     color: white;
     font-size: 3em;
     position: absolute;
@@ -107,7 +107,7 @@ body {
     width: 100%;
 }
 #showInfo{
-    display: none;
+    /* display: none; */
     background: orange;
     color: white;
     position: absolute;

@@ -11,127 +11,189 @@ const equal = document.getElementById('equals')
 const dot = document.getElementById('dot')
 const percent = document.getElementById('percent')
 const negative = document.getElementById('negative')
-const grayBtn = document.   querySelectorAll('.gray-button')
+const grayBtn = document.querySelectorAll('.gray-button')
 
-let firstValue = null
-let isFirstValue = true
-let secondValue = 0
 let isNull = true
-let lastOperator = ''
+let isFirstValue = true
+let CurrentOperator = ''
+let operators = []
+let isOperator = false
 let percentValue = 0
+let lastOperator = ''
+let lastValue = 0
+let isDot = false
+    
+    numbers[9].disabled = true
+    dot.disabled = true
 
+    // result.innerHTML.style.color = 'red'
+// console.log(result.innerHTML.length)
 
 numbers.forEach(function(el){
     el.addEventListener('click', function(){
         clearAnimation()
-        if(isFirstValue === true){
-            if(isNull === true){
-                result.innerHTML = el.innerHTML
-                process.innerHTML = el.innerHTML
-                firstValue = result.innerHTML
-                isNull = false
-            }
-            else{
-                result.innerHTML += el.innerHTML
-                process.innerHTML += el.innerHTML
-                firstValue = result.innerHTML
-            }
+        if(result.innerHTML.length >= 5){
+            result.style.fontSize = '100px'
         }
-        else if(isFirstValue === false){
-            if(isNull === true){
-                result.innerHTML = el.innerHTML
-                process.innerHTML += el.innerHTML
-                secondValue = result.innerHTML
-                isNull = false
-            }
-            else{
-                result.innerHTML += el.innerHTML
-                process.innerHTML += el.innerHTML
-                secondValue = result.innerHTML
-            }
+        if(result.innerHTML.length >= 7){
+            result.style.fontSize = '85px'
         }
-    })
-})
+        if(result.innerHTML.length >= 8){
+            result.style.fontSize = '70px'            
+        }
+        if(result.innerHTML.length >= 9){
+            el.disabled = true
+        }
+     
 
-operator.forEach(function(el){
-    el.addEventListener('click',function(){        
-        lastOperator = el.innerHTML
-        if(isNull === false){
+ 
+    
         if(isFirstValue === true){
-            process.innerHTML += el.innerHTML
-            console.log('1')
-            isFirstValue = false
-            secondValue = 0
-            isNull = true
+            if(isNull === true){
+                result.innerHTML = el.innerHTML
+                isNull = false
+                numbers[9].disabled = false
+                dot.disabled = false
+                process.innerHTML = el.innerHTML
+                 
+            }
+            else{
+                result.innerHTML += el.innerHTML
+                process.innerHTML += el.innerHTML
+
+            }
         }
         else{
-            process.innerHTML = process.innerHTML
-            console.log('2')
-            process.innerHTML = eval(firstValue + lastOperator.replace(/X/gi, '*') + secondValue)
-            result.innerHTML = process.innerHTML
-            firstValue = process.innerHTML
-            secondValue = 0
-            // process.innerHTML = ''
-            isFirstValue = false
-            isNull = true
-            
-        }}
+            if(isNull === true){
+                result.innerHTML = el.innerHTML 
+                process.innerHTML += el.innerHTML
+                isNull = false
+                numbers[9].disabled = false
+                dot.disabled = false
+                CurrentOperator = ''
+                operators = []
+                isOperator = false
+
+
+                
+            }
+            else{
+                result.innerHTML += el.innerHTML
+                process.innerHTML += el.innerHTML
+
+            }
+        }
+      })})
+    //   function a(){
+  numbers.forEach(function(el){
+    el.addEventListener('click', function(){
+        if(isDot === true){
+         dot.disabled = true
+         console.log('sd')
+        }
+        else {
+            dot.disabeld = false
+        }
+    })
+  })
+
+  dot.addEventListener('click', function(){
+    isDot = true
+  })
+
+operator.forEach(function(el){
+    el.addEventListener('click',function(){
+        isOperator = true
+        lastValue = result.innerHTML
+        lastOperator = el.innerHTML
+        if(isOperator === true && operators.length < 1){
+            CurrentOperator = el.innerHTML
+            process.innerHTML += CurrentOperator
+            operators.push(CurrentOperator)
+        }
+    
+
+      
+   
+       else if(isOperator === true && operators.length >= 1){
+            process.innerHTML = process.innerHTML.replace(/.$/, el.innerHTML)
+        }
+
+        isFirstValue = false
+        isNull = true
     })
 })
 
-document.getElementById('showInfo').onclick = function(){
+document.getElementById('showInfo').addEventListener('click', function(){
     console.log(`
-    Is First Value: ${isFirstValue}
-    First Value: ${firstValue}
-    Second Value: ${secondValue}
-    Last Operation: ${lastOperator}
-    IsNull: ${isNull}
+        IsNull: ${isNull}
+        IsFirstValue: ${isFirstValue}
+        CurrentOperator: ${CurrentOperator}
+        Operators: ${operators}
+        firstOperator: ${operators[0]}
+        isOperator: ${isOperator}
+        Oper. length: ${operators.length}
+        Last Operator: ${lastOperator}
+        Last Value: ${lastValue}
     `)
+})
 
-}
-
+equal.addEventListener('click', function(){
+    process.innerHTML = `${eval(process.innerHTML.replace(/X/gi, '*'))}`
+})
 clear.addEventListener('click',function(){
     isFirstValue = true
     isNull = true
-    secondValue = 0
-    firstValue = 0
-    lastOperator = ''
-    result.innerHTML = 0    
-    process.innerHTML = 'Skytner™ Calc'
+    CurrentOperator = ''
+    operators = []
+    result.style.fontSize = '120px'
+    numbers[9].disabled = true
+    numbers.forEach(e => e.disabled = false)
+    process.innerHTML = 'Clear'
+    result.innerHTML = 0
     clearAnimation()
-    console.clear()
 })
 
-equal.addEventListener('click',function(){
-    process.innerHTML = eval(firstValue + lastOperator.replace(/X/gi, '*') + secondValue)
-    result.innerHTML = process.innerHTML
-    firstValue = process.innerHTML
-})
 
-dot.addEventListener('click',function(){
-    process.innerHTML += '.'
-    result.innerHTML += '.'
-})
+
 
 percent.addEventListener('click',function(){
-    if(isFirstValue === false && secondValue !== 0){
-        percentValue = firstValue/100*secondValue
-        process.innerHTML = eval(firstValue + lastOperator  + percentValue)
-        result.innerHTML = process.innerHTML 
-    }
-})
-negative.addEventListener('click',function(){
-    result.innerHTML = -result.innerHTML
-    if(isFirstValue === true){
-        firstValue = -firstValue
-     }
-     else{
-        secondValue = -secondValue
-     }
-     
+    // if(isFirstValue === false && secondValue !== 0){
+        // percentValue = result.innerHTML / 100
+        percentValue = lastValue/100*result.innerHTML
+        process.innerHTML = process.innerHTML.replace((lastOperator + result.innerHTML), (lastOperator + percentValue))
+        result.innerHTML = percentValue
+       
+
+        // console.log(eval(result.innerHTML + lastOperator  + percentValue))
+        console.log(percentValue)
+        console.log(result.innerHTML)
+        console.log(process.innerHTML)
+        // result.innerHTML = process.innerHTML 
+    // }
 })
 
-//Animation
+
+
+dot.addEventListener('click',function(){
+    result.innerHTML += '.'
+    process.innerHTML += '.'
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Disabling operator's buttons and animating 
 
 operator.forEach(function(el){
     el.addEventListener('click', function(){
@@ -201,7 +263,6 @@ function clearAnimation(){
     multiply.disabled = false
 
 }
-
 numbers.forEach(function(el){
     el.addEventListener('click', function(){
     el.classList.add('animNum')
