@@ -110,6 +110,7 @@ body {
     /* display: none; */
     background: orange;
     color: white;
+    border-radius: 10px;
     position: absolute;
     top: 140px;
     left: 420px;

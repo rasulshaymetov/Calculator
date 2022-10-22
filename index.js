@@ -23,12 +23,12 @@ let lastOperator = ''
 let lastValue = 0
 let isDot = false
 let count = 0
+let equalIsCliked = false
+let basicOp = Boolean
     
     numbers[9].disabled = true
     dot.disabled = true
 
-    // result.innerHTML.style.color = 'red'
-// console.log(result.innerHTML.length)
 
 numbers.forEach(function(el){
     el.addEventListener('click', function(){
@@ -87,7 +87,6 @@ numbers.forEach(function(el){
             }
         }
       })})
-    //   function a(){
   numbers.forEach(function(el){
     el.addEventListener('click', function(){
         isDot = true
@@ -100,7 +99,9 @@ numbers.forEach(function(el){
 
 operator.forEach(function(el){
     el.addEventListener('click',function(){
+        el.innerHTML == '+' || el.innerHTML == '-' ? basicOp = true : basicOp = false   
         isOperator = true
+        equalIsCliked = false
         count = 0
         numbers[9].disabled = true
         lastValue = result.innerHTML
@@ -143,35 +144,53 @@ document.getElementById('showInfo').addEventListener('click', function(){
         Last Value: ${lastValue}
         Is Dot: ${isDot}
         Count: ${count}
+        Equal is cliked: ${equalIsCliked}
+        Basic Op: ${basicOp}
     `)
 })
 
 equal.addEventListener('click', function(){
     process.innerHTML = `${eval(process.innerHTML.replace(/X/gi, '*'))}`
+    result.innerHTML = process.innerHTML
+    equalIsCliked = true
 })
 clear.addEventListener('click',function(){
-    if(clear.innerHTML === 'C'){
-        isNull = true
-        result.innerHTML = 0
-        clear.innerHTML = 'AC'
-        for(let i = 0; i<count; i++){
-            process.innerHTML = process.innerHTML.slice(0, -1);
-        }
-    }
-    else if(clear.innerHTML === 'AC'){
+    
+    if(equalIsCliked == true){
         isFirstValue = true
         CurrentOperator = ''
         operators = []
+        equalIsCliked = false
+        isNull = true
         result.innerHTML = 0
-        process.innerHTML = 'Clear'
-
+        process.innerHTML = 0
+        clear.innerHTML = 'AC'
+    }
+    else{
+        if(clear.innerHTML === 'C'){
+            isNull = true
+            result.innerHTML = 0
+            clear.innerHTML = 'AC'
+            for(let i = 0; i<count; i++){
+                process.innerHTML = process.innerHTML.slice(0, -1);
+            }
+        }
+        else if(clear.innerHTML === 'AC'){
+            isFirstValue = true
+            CurrentOperator = ''
+            operators = []
+            result.innerHTML = 0
+            process.innerHTML = 'Clear'
+    
+        }
     }
    
-
+   
+    lastValue = 0
     result.style.fontSize = '120px'
     numbers[9].disabled = true
     numbers.forEach(e => e.disabled = false)
-
+    count = 0
     clearAnimation()
     numbers[9].disabled = true
 })
@@ -204,6 +223,15 @@ dot.addEventListener('click',function(){
 
 
 
+negative.addEventListener('click',function(){
+    if(basicOp === true ){
+        process.innerHTML = process.innerHTML.replace((lastOperator + result.innerHTML), ('-' + result.innerHTML))
+    }
+    else{
+        process.innerHTML = process.innerHTML.replace((lastOperator + result.innerHTML), (lastOperator + ('-' + result.innerHTML)))
+    }
+    result.innerHTML = -result.innerHTML
+})
 
 
 
@@ -213,9 +241,7 @@ dot.addEventListener('click',function(){
 
 
 
-
-
-//Disabling operator's buttons and animating 
+// * Disabling operator's buttons and animating 
 
 operator.forEach(function(el){
     el.addEventListener('click', function(){
