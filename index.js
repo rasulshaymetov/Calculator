@@ -25,6 +25,7 @@ let isDot = false
 let count = 0
 let equalIsCliked = false
 let basicOp = Boolean
+let incClear = Boolean
     
     numbers[9].disabled = true
     dot.disabled = true
@@ -106,6 +107,14 @@ operator.forEach(function(el){
         numbers[9].disabled = true
         lastValue = result.innerHTML
         lastOperator = el.innerHTML
+
+        if(incClear === true){
+            process.innerHTML = process.innerHTML.replace(/.$/, el.innerHTML)
+            process.innerHTML = process.innerHTML.slice(0, -1);
+            isOperator === true 
+            incClear = false
+        }
+
         if(isOperator === true && operators.length < 1){
             CurrentOperator = el.innerHTML
             process.innerHTML += CurrentOperator
@@ -146,6 +155,7 @@ document.getElementById('showInfo').addEventListener('click', function(){
         Count: ${count}
         Equal is cliked: ${equalIsCliked}
         Basic Op: ${basicOp}
+        incClear:${incClear}
     `)
 })
 
@@ -171,6 +181,7 @@ clear.addEventListener('click',function(){
             isNull = true
             result.innerHTML = 0
             clear.innerHTML = 'AC'
+            incClear = true
             for(let i = 0; i<count; i++){
                 process.innerHTML = process.innerHTML.slice(0, -1);
             }
@@ -181,6 +192,7 @@ clear.addEventListener('click',function(){
             operators = []
             result.innerHTML = 0
             process.innerHTML = 'Clear'
+            incClear = false
     
         }
     }
