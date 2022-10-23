@@ -118,3 +118,7 @@ body {
     height: 400px;
     width: 200px;
 }
+#showInfo:active{
+    transform: translateY(0.5px);
+    opacity: 0.9;
+}

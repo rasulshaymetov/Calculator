@@ -26,13 +26,21 @@ let count = 0
 let equalIsCliked = false
 let basicOp = Boolean
 let incClear = Boolean
+let numLock = false
+// ! Переменная чтобы узнать какое было второе число для операций 
+let lastSecValue = 0
+// ! Переменная для определения количества кликов на равно
+let equalLength = 0
     
-    numbers[9].disabled = true
-    dot.disabled = true
+    // numbers[9].disabled = true
+    // dot.disabled = true
 
 
 numbers.forEach(function(el){
     el.addEventListener('click', function(){
+        equalLength = 0
+        lastSecValue = 0
+
         count++
         clear.innerHTML = 'C'
         clearAnimation()
@@ -45,13 +53,14 @@ numbers.forEach(function(el){
         if(result.innerHTML.length >= 8){
             result.style.fontSize = '70px'            
         }
-        if(result.innerHTML.length >= 9){
-            el.disabled = true
+        if(result.innerHTML.length >= 9 && isNull === false){
+            numLock = true
+
         }
      
 
  
-    
+    if(numLock === false){
         if(isFirstValue === true){
             if(isNull === true){
                 result.innerHTML = el.innerHTML
@@ -72,7 +81,7 @@ numbers.forEach(function(el){
                 result.innerHTML = el.innerHTML 
                 process.innerHTML += el.innerHTML
                 isNull = false
-                numbers[9].disabled = false
+                // numbers[9].disabled = false
                 dot.disabled = false
                 CurrentOperator = ''
                 operators = []
@@ -86,27 +95,30 @@ numbers.forEach(function(el){
                 process.innerHTML += el.innerHTML
 
             }
+            
         }
-      })})
-  numbers.forEach(function(el){
-    el.addEventListener('click', function(){
-        isDot = true
-    })
-  })
+    }
+    else{
+     
+    }
 
-  dot.addEventListener('click', function(){
-    dot.disabled = true
-  })
+      })})
+     
+
 
 operator.forEach(function(el){
     el.addEventListener('click',function(){
         el.innerHTML == '+' || el.innerHTML == '-' ? basicOp = true : basicOp = false   
         isOperator = true
         equalIsCliked = false
+       
         count = 0
-        numbers[9].disabled = true
+        numbers[9].disabled = false
         lastValue = result.innerHTML
         lastOperator = el.innerHTML
+        dot.disabled = false
+        equalLength = 0
+        lastSecValue = 0
 
         if(incClear === true){
             process.innerHTML = process.innerHTML.replace(/.$/, el.innerHTML)
@@ -127,16 +139,25 @@ operator.forEach(function(el){
        else if(isOperator === true && operators.length >= 1){
             process.innerHTML = process.innerHTML.replace(/.$/, el.innerHTML)
         }
-
+        numLock = false
         isFirstValue = false
         isNull = true
     })
 })
 numbers[9].addEventListener('click', function(){
-    if (result.innerHTML[0] === '0')
+    if (result.innerHTML[0] === '0' && isFirstValue === true){
     numbers[9].disabled = true
+    console.log('debagging')}
     else{
         numbers[9].disabled = false
+    }
+})
+dot.addEventListener('click', function(){
+    if(isDot === false){
+        dot.disabled = true
+    }
+    else{
+        dot.disabled = false
     }
 })
 
@@ -156,13 +177,29 @@ document.getElementById('showInfo').addEventListener('click', function(){
         Equal is cliked: ${equalIsCliked}
         Basic Op: ${basicOp}
         incClear:${incClear}
-    `)
+        NumLock:${numLock}
+        EqualLength: ${equalLength}
+        LastSecValue:${lastSecValue}`)
 })
 
 equal.addEventListener('click', function(){
+   if(equalLength < 1){
+    lastSecValue = lastOperator.replace(/X/gi, '*') + result.innerHTML
     process.innerHTML = `${eval(process.innerHTML.replace(/X/gi, '*'))}`
     result.innerHTML = process.innerHTML
     equalIsCliked = true
+    numLock = false
+    isDot = false
+    equalLength++
+  
+
+   }
+   else{
+    result.innerHTML = eval(result.innerHTML + lastSecValue)
+    process.innerHTML = result.innerHTML
+
+}
+
 })
 clear.addEventListener('click',function(){
     
@@ -196,15 +233,16 @@ clear.addEventListener('click',function(){
     
         }
     }
-   
-   
+    isDot = false
+    numLock = false
     lastValue = 0
     result.style.fontSize = '120px'
-    numbers[9].disabled = true
     numbers.forEach(e => e.disabled = false)
     count = 0
+    dot.disabled = false
+    // numbers[9].disabled = true
     clearAnimation()
-    numbers[9].disabled = true
+   
 })
 
 
@@ -229,8 +267,29 @@ percent.addEventListener('click',function(){
 
 
 dot.addEventListener('click',function(){
-    result.innerHTML += '.'
-    process.innerHTML += '.'
+    if(isFirstValue === true){
+        if(isNull === true){
+            process.innerHTML = '0.'
+        }
+        else{
+            process.innerHTML += '.'
+        }
+        result.innerHTML += '.'
+    }
+    else{
+        if(isNull === true){
+            result.innerHTML = '0.'
+            process.innerHTML += '0.'    
+        }
+        else{
+            result.innerHTML += '.'
+            process.innerHTML += '.'
+        }
+        
+    }
+   
+   
+    isNull = false
 })
 
 
