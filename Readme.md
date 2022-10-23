@@ -1,4 +1,4 @@
-# [Calculator](https://github.com/Skytner/Calculator) beta 0.95 version
+# [Calculator](https://skytner.github.io/Calculator/) beta 0.95 version
 # Fixed numbers large length bug and added function repeat last action (0.95v)
 # Fixed operators bug and changed Readme.md (0.92v)
 # Added negative operator and fixed equals bug (0.9v)
