@@ -27,10 +27,10 @@ let equalIsCliked = false
 let basicOp = Boolean
 let incClear = Boolean
 let numLock = false
-// ! Переменная чтобы узнать какое было второе число для операций 
 let lastSecValue = 0
-// ! Переменная для определения количества кликов на равно
 let equalLength = 0
+let clearLength = 0
+let firstValue = 0
     
     // numbers[9].disabled = true
     // dot.disabled = true
@@ -39,8 +39,9 @@ let equalLength = 0
 numbers.forEach(function(el){
     el.addEventListener('click', function(){
         equalLength = 0
+        clearLength = 0
         lastSecValue = 0
-
+        
         count++
         clear.innerHTML = 'C'
         clearAnimation()
@@ -68,12 +69,12 @@ numbers.forEach(function(el){
                 numbers[9].disabled = false
                 dot.disabled = false
                 process.innerHTML = el.innerHTML
-                 
+                firstValue = el.innerHTML
             }
             else{
                 result.innerHTML += el.innerHTML
                 process.innerHTML += el.innerHTML
-
+                firstValue += el.innerHTML
             }
         }
         else{
@@ -111,7 +112,7 @@ operator.forEach(function(el){
         el.innerHTML == '+' || el.innerHTML == '-' ? basicOp = true : basicOp = false   
         isOperator = true
         equalIsCliked = false
-       
+        clearLength = 0
         count = 0
         numbers[9].disabled = false
         lastValue = result.innerHTML
@@ -179,7 +180,9 @@ document.getElementById('showInfo').addEventListener('click', function(){
         incClear:${incClear}
         NumLock:${numLock}
         EqualLength: ${equalLength}
-        LastSecValue:${lastSecValue}`)
+        LastSecValue:${lastSecValue}
+        ClearLength:${clearLength}
+        FirstValue:${firstValue}`)
 })
 
 equal.addEventListener('click', function(){
@@ -191,8 +194,6 @@ equal.addEventListener('click', function(){
     numLock = false
     isDot = false
     equalLength++
-  
-
    }
    else{
     result.innerHTML = eval(result.innerHTML + lastSecValue)
@@ -202,7 +203,6 @@ equal.addEventListener('click', function(){
 
 })
 clear.addEventListener('click',function(){
-    
     if(equalIsCliked == true){
         isFirstValue = true
         CurrentOperator = ''
@@ -212,30 +212,48 @@ clear.addEventListener('click',function(){
         result.innerHTML = 0
         process.innerHTML = 0
         clear.innerHTML = 'AC'
+
     }
     else{
         if(clear.innerHTML === 'C'){
+            if(clearLength == 0){
             isNull = true
             result.innerHTML = 0
-            clear.innerHTML = 'AC'
+            
+            console.log('Неполная очистка второго значения')
             incClear = true
+            clearLength++
             for(let i = 0; i<count; i++){
                 process.innerHTML = process.innerHTML.slice(0, -1);
-            }
+                console.log('Deleted element')
+            }}
+          else if(clearLength > 0){
+            process.innerHTML = process.innerHTML.slice(0, -1);    
+            clear.innerHTML = 'AC'
+            isNull= true
+            clearLength = 0
+            incClear = false
+
+            // isFirstValue = true
+          }
+         
         }
-        else if(clear.innerHTML === 'AC'){
+        else{
             isFirstValue = true
             CurrentOperator = ''
             operators = []
             result.innerHTML = 0
             process.innerHTML = 'Clear'
             incClear = false
+            
     
         }
     }
     isDot = false
     numLock = false
     lastValue = 0
+    firstValue = 0
+    isFirstValue = true
     result.style.fontSize = '120px'
     numbers.forEach(e => e.disabled = false)
     count = 0
@@ -247,21 +265,15 @@ clear.addEventListener('click',function(){
 
 
 
-
 percent.addEventListener('click',function(){
-    // if(isFirstValue === false && secondValue !== 0){
-        // percentValue = result.innerHTML / 100
-        percentValue = lastValue/100*result.innerHTML
+
+        percentValue = firstValue/100*result.innerHTML
         process.innerHTML = process.innerHTML.replace((lastOperator + result.innerHTML), (lastOperator + percentValue))
         result.innerHTML = percentValue
-       
+        process.innerHTML = result.innerHTML
 
-        // console.log(eval(result.innerHTML + lastOperator  + percentValue))
         console.log(percentValue)
-        console.log(result.innerHTML)
-        console.log(process.innerHTML)
-        // result.innerHTML = process.innerHTML 
-    // }
+        firstValue = percentValue
 })
 
 

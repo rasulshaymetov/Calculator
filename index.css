@@ -102,8 +102,9 @@ body {
     color: white;
     font-size: 3em;
     position: absolute;
-    left: 430px;
-    top: 0;
+    /* width: 414px; */
+    left: 460px;
+    top: 0px;
     width: 100%;
 }
 #showInfo{
