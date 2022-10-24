@@ -1,4 +1,5 @@
 # Calculator beta 0.95 version
+# Fixed percent bug, improved cleaning function (0.96v)
 # Fixed numbers large length bug and added function repeat last action (0.95v)
 # Fixed operators bug and changed Readme.md (0.92v)
 # Added negative operator and fixed equals bug (0.9v)
