@@ -31,7 +31,7 @@ body {
 .buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap:6px;
     justify-content: space-evenly;
     /* padding-right: 30px; */
     /* margin-left: 30px; */
@@ -100,15 +100,16 @@ body {
 .progress{
     /* display: none; */
     color: white;
-    font-size: 3em;
+    font-size: 1.5em;
     position: absolute;
     /* width: 414px; */
-    left: 460px;
-    top: 0px;
+    left: 250px;
+    max-width: 200px;
+    top: -60px;
     width: 100%;
 }
 #showInfo{
-    /* display: none; */
+    display: none;
     background: orange;
     color: white;
     border-radius: 10px;
