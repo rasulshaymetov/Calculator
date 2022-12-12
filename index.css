@@ -10,7 +10,7 @@ body {
     justify-content: space-around;
 }
 .container {
-    max-width: 390px;
+    max-width: 420px;
     margin: auto;
     position: absolute;
     /* display: flex; */
@@ -109,7 +109,7 @@ body {
     width: 100%;
 }
 #showInfo{
-    display: none;
+    /* display: none; */
     background: orange;
     color: white;
     border-radius: 10px;

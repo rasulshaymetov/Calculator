@@ -44,16 +44,23 @@ numbers.forEach(function (el) {
     count++;
     clear.innerHTML = "C";
     clearAnimation();
+    if(result.innerHTML.length === 3){
+      result.innerHTML = result.innerHTML + ' '
+    }
+    if(result.innerHTML.length ===  7){
+      result.innerHTML = result.innerHTML + ' '
+    }
     if (result.innerHTML.length >= 5) {
       result.style.fontSize = "100px";
+      
     }
     if (result.innerHTML.length >= 7) {
-      result.style.fontSize = "85px";
+      result.style.fontSize = "80px";
     }
     if (result.innerHTML.length >= 8) {
       result.style.fontSize = "70px";
     }
-    if (result.innerHTML.length >= 9 && isNull === false) {
+    if (result.innerHTML.length === 11 && isNull === false) {
       numLock = true;
     }
 
@@ -127,16 +134,19 @@ operator.forEach(function (el) {
   });
 });
 numbers[9].addEventListener("click", function () {
-  if (result.innerHTML[0] === "0" && isFirstValue === true) {
+  if (isDot === false) {
     numbers[9].disabled = true;
     console.log("debagging");
-  } else {
-    numbers[9].disabled = false;
+  } if(isDot === true){
+    console.log('Zero is working')
   }
 });
 dot.addEventListener("click", function () {
   if (isDot === false) {
     dot.disabled = true;
+    console.log(numbers[9])
+    numbers[9].disabled = false
+    isDot = true
   } else {
     dot.disabled = false;
   }
@@ -162,10 +172,14 @@ document.getElementById("showInfo").addEventListener("click", function () {
         EqualLength: ${equalLength}
         LastSecValue:${lastSecValue}
         ClearLength:${clearLength}
-        FirstValue:${firstValue}`);
+        FirstValue:${firstValue}
+        ${result.innerHTML}`);
+
+        
 });
 
 equal.addEventListener("click", function () {
+  console.log(result.innerHTML.length)
   if (equalLength < 1) {
     lastSecValue = lastOperator.replace(/X/gi, "*") + result.innerHTML;
     process.innerHTML = `${eval(process.innerHTML.replace(/X/gi, "*"))}`;
@@ -247,7 +261,6 @@ percent.addEventListener("click", function () {
   );
   result.innerHTML = percentValue;
   process.innerHTML = result.innerHTML;
-
   console.log(percentValue);
   firstValue = percentValue;
 });
@@ -275,7 +288,6 @@ dot.addEventListener("click", function () {
 
 square.addEventListener("click", () => {
  var squareResult = result.innerHTML * result.innerHTML;
-
   if (equalIsCliked === true || isFirstValue === true) {
     process.innerHTML = process.innerHTML.replace(
       process.innerHTML,
